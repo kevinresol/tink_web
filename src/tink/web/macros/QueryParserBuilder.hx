@@ -77,7 +77,7 @@ class QueryParserBuilder {
     return macro (${string()}) == 'true';
   }
   static public function date():Expr {
-    return throw "not implemented";
+    return macro Date.fromTime(${float()});
   }
   static public function bytes():Expr {
     return throw "not implemented";
