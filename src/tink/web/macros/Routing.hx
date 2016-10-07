@@ -121,7 +121,7 @@ class Routing {
                   type: null,
                   expr: 
                     macro @:pos(f.pos) switch this.request.header.get('content-type') {
-                      case ['application/json']:
+                      case [v] if(StringTools.startsWith(v, 'application/json')):
                         switch this.request.body {
                           case Plain(src):
                             src.all() >> function (body:haxe.io.Bytes) return new tink.json.Parser<$ct>().tryParse(body.toString());                     
