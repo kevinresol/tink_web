@@ -110,14 +110,14 @@ class Context {
       request.header.uri.query
     );
     
-  static public function authed<U, S:Session<U>>(request:IncomingRequest, getSession:IncomingRequestHeader->S) 
+  static public function authed<U, S:Session<U>>(request:IncomingRequest, getSession:IncomingRequest->S) 
     return new AuthedContext<U, S>(
       parseAcceptHeader(request.header),
       request, 
       0,
       request.header.uri.path.parts(), 
       request.header.uri.query,
-      getSession.bind(request.header)
+      getSession.bind(request)
     );
    
   static function parseAcceptHeader(h:Header)
@@ -169,8 +169,11 @@ class Context {
         return cur.body.all().map(function (o) return switch o {
           case Success(bytes):
             ret.push(new Named(
-              name, 
-              File(tink.web.forms.FormFile.ofBlob(fileName, mimeType, bytes))
+              name,
+              if(fileName == null)
+                Value(bytes.toString())
+              else 
+                File(tink.web.forms.FormFile.ofBlob(fileName, mimeType, bytes))
             ));
             true;
           case Failure(e):

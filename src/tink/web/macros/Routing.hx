@@ -290,7 +290,7 @@ class Routing {
             
             switch u.getID() {
               case 'haxe.ds.Option':
-              case null:
+              case _:
                 e = macro @:pos(e.pos) switch user {
                   case Some(user): $e;
                   case None: new tink.core.Error(Unauthorized, 'unauthorized');
