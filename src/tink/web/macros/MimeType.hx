@@ -56,13 +56,13 @@ abstract MimeType(String) from String to String {
   static public var readers(default, null) = new Registry('reader', [
     'application/json' => function (type:Type, pos:Position) {
       var ct = type.toComplex({ direct: true });
-      return macro @:pos(pos) new tink.json.Parser<$ct>().tryParse;
+      return macro @:pos(pos) function(v:String) return tink.Json.parse((v:$ct));
     }
   ]);
   static public var writers(default, null) = new Registry('writer', [
     'application/json' => function (type:Type, pos:Position) {
       var ct = type.toComplex( { direct: true } );
-      return macro @:pos(pos) new tink.json.Writer<$ct>().write;
+      return macro @:pos(pos) function(v:$ct) return tink.Json.stringify(v);
     }
   ]);
   
